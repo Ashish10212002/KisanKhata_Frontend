@@ -16,22 +16,22 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// --- Auth Endpoints ---
-export const loginUser = (creds) => api.post('/auth/login', creds);
-export const registerUser = (userData) => api.post('/auth/signup', userData);
+// --- Auth Endpoints (FIXED: Added /api) ---
+export const loginUser = (creds) => api.post('/api/auth/login', creds);
+export const registerUser = (userData) => api.post('/api/auth/signup', userData);
 
-// --- Data Endpoints (Secure) ---
-export const getDashboardSummary = () => api.get('/dashboard/summary');
-export const getFarms = () => api.get('/farms');
-export const createFarm = (farm) => api.post('/farms', farm);
-export const updateFarm = (id, farm) => api.put(`/farms/${id}`, farm);
+// --- Data Endpoints (FIXED: Added /api) ---
+export const getDashboardSummary = () => api.get('/api/dashboard/summary');
+export const getFarms = () => api.get('/api/farms');
+export const createFarm = (farm) => api.post('/api/farms', farm);
+export const updateFarm = (id, farm) => api.put(`/api/farms/${id}`, farm);
 
-export const getAllTransactions = () => api.get('/transactions');
-export const getTransactionsByFarm = (farmId) => api.get(`/transactions/farm/${farmId}`);
-export const getCommonTransactions = () => api.get('/transactions/common');
-export const createTransaction = (tx) => api.post('/transactions', tx);
-export const updateTransaction = (id, tx) => api.put(`/transactions/${id}`, tx);
+export const getAllTransactions = () => api.get('/api/transactions');
+export const getTransactionsByFarm = (farmId) => api.get(`/api/transactions/farm/${farmId}`);
+export const getCommonTransactions = () => api.get('/api/transactions/common');
+export const createTransaction = (tx) => api.post('/api/transactions', tx);
+export const updateTransaction = (id, tx) => api.put(`/api/transactions/${id}`, tx);
 
-export const askAI = (message) => api.post('/ai/chat', { message });
+export const askAI = (message) => api.post('/api/ai/chat', { message });
 
 export default api;
