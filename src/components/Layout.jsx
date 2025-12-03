@@ -1,0 +1,69 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Sprout, MessageSquareText, Home } from 'lucide-react'; // Added Home Icon
+
+export default function Layout({ children }) {
+  const location = useLocation();
+  
+  const navItems = [
+    { icon: <Home size={24} />, label: 'Home', path: '/home' }, // NEW
+    { icon: <LayoutDashboard size={24} />, label: 'Finance', path: '/dashboard' },
+    { icon: <Sprout size={24} />, label: 'Farms', path: '/farms' },
+    { icon: <MessageSquareText size={24} />, label: 'AI', path: '/ai' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-100 pb-24 md:pb-0 md:flex">
+      
+      {/* MOBILE BOTTOM NAV - Updated to grid-cols-4 */}
+      <nav className="fixed bottom-0 w-full bg-white border-t z-50 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <div className="grid grid-cols-4 h-20"> 
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex flex-col items-center justify-center w-full h-full transition-all active:scale-95 ${
+                location.pathname === item.path 
+                  ? 'text-green-600 border-t-4 border-green-600 bg-green-50' 
+                  : 'text-gray-400 hover:bg-gray-50'
+              }`}
+            >
+              <div className="mb-1">{item.icon}</div>
+              <span className="text-[10px] font-bold">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </nav>
+
+      {/* DESKTOP SIDEBAR */}
+      <nav className="hidden md:flex flex-col w-64 bg-white border-r h-screen fixed left-0 top-0 z-40">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-green-700 flex items-center gap-2">
+            <Sprout /> FarmTrack
+          </h1>
+        </div>
+        <div className="flex-1 mt-4">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center px-6 py-4 mx-2 rounded-xl transition-all ${
+                location.pathname === item.path 
+                  ? 'text-green-700 bg-green-100 font-bold shadow-sm' 
+                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+              }`}
+            >
+              {item.icon}
+              <span className="ml-3 text-sm">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="flex-1 md:ml-64 p-4 md:p-8 overflow-y-auto h-screen bg-gray-50/50">
+        {children}
+      </main>
+    </div>
+  );
+}
