@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   const location = useLocation();
   
   const navItems = [
-    // ✅ FIX: Changed path from '/home' to '/welcome'
+    // ✅ FIX: Path is now '/welcome'
     { icon: <Home size={24} />, label: 'Home', path: '/welcome' }, 
     { icon: <LayoutDashboard size={24} />, label: 'Finance', path: '/dashboard' },
     { icon: <Sprout size={24} />, label: 'Farms', path: '/farms' },
@@ -39,10 +39,10 @@ export default function Layout({ children }) {
       {/* DESKTOP SIDEBAR */}
       <nav className="hidden md:flex flex-col w-64 bg-white border-r h-screen fixed left-0 top-0 z-40">
         <div className="p-6">
-          {/* ✅ FIX: Made the Logo clickable so it redirects to Welcome */}
+          {/* ✅ FIX: Clickable Logo goes to '/welcome' and says 'Kishan Khata' */}
           <Link to="/welcome" className="hover:opacity-80 transition-opacity block">
             <h1 className="text-2xl font-bold text-green-700 flex items-center gap-2">
-              <Sprout /> FarmTrack
+              <Sprout /> Kishan Khata
             </h1>
           </Link>
         </div>
