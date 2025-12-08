@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+// ✅ IMPORT CHECK: 'Home' and 'Sprout' must be imported!
 import { LayoutDashboard, Sprout, MessageSquareText, Home } from 'lucide-react';
 
 export default function Layout({ children }) {
   const location = useLocation();
   
   const navItems = [
-    // ✅ FIX: Path is now '/welcome'
+    // ✅ FIX 1: Path is '/welcome' to match your App.jsx routes
     { icon: <Home size={24} />, label: 'Home', path: '/welcome' }, 
     { icon: <LayoutDashboard size={24} />, label: 'Finance', path: '/dashboard' },
     { icon: <Sprout size={24} />, label: 'Farms', path: '/farms' },
@@ -39,13 +40,17 @@ export default function Layout({ children }) {
       {/* DESKTOP SIDEBAR */}
       <nav className="hidden md:flex flex-col w-64 bg-white border-r h-screen fixed left-0 top-0 z-40">
         <div className="p-6">
-          {/* ✅ FIX: Clickable Logo goes to '/welcome' and says 'Kishan Khata' */}
+          {/* ✅ FIX 2: LOGO SECTION */}
+          {/* - Wraps the Logo in a Link to /welcome */}
+          {/* - Keeps the <Sprout /> icon */}
+          {/* - Changes text to "Kishan Khata" */}
           <Link to="/welcome" className="hover:opacity-80 transition-opacity block">
             <h1 className="text-2xl font-bold text-green-700 flex items-center gap-2">
               <Sprout /> Kishan Khata
             </h1>
           </Link>
         </div>
+        
         <div className="flex-1 mt-4">
           {navItems.map((item) => (
             <Link
