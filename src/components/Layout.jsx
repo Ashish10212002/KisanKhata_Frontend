@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-// ✅ IMPORT CHECK: 'Home' and 'Sprout' must be imported!
 import { LayoutDashboard, Sprout, MessageSquareText, Home } from 'lucide-react';
 
 export default function Layout({ children }) {
   const location = useLocation();
   
   const navItems = [
-    // ✅ FIX 1: Path is '/welcome' to match your App.jsx routes
     { icon: <Home size={24} />, label: 'Home', path: '/welcome' }, 
     { icon: <LayoutDashboard size={24} />, label: 'Finance', path: '/dashboard' },
     { icon: <Sprout size={24} />, label: 'Farms', path: '/farms' },
@@ -17,7 +15,16 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen bg-gray-100 pb-24 md:pb-0 md:flex">
       
-      {/* MOBILE BOTTOM NAV */}
+      {/* --- 📱 MOBILE TOP HEADER (New!) --- */}
+      {/* Visible only on mobile (md:hidden). Fixed at top. */}
+      <header className="fixed top-0 left-0 w-full bg-white border-b z-50 md:hidden h-16 flex items-center px-4 shadow-sm">
+        <Link to="/welcome" className="flex items-center gap-2 text-green-700 active:opacity-70 transition-opacity">
+          <Sprout size={24} />
+          <h1 className="text-xl font-bold">Kishan Khata</h1>
+        </Link>
+      </header>
+
+      {/* --- 📱 MOBILE BOTTOM NAV --- */}
       <nav className="fixed bottom-0 w-full bg-white border-t z-50 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <div className="grid grid-cols-4 h-20"> 
           {navItems.map((item) => (
@@ -37,20 +44,15 @@ export default function Layout({ children }) {
         </div>
       </nav>
 
-      {/* DESKTOP SIDEBAR */}
+      {/* --- 💻 DESKTOP SIDEBAR --- */}
       <nav className="hidden md:flex flex-col w-64 bg-white border-r h-screen fixed left-0 top-0 z-40">
         <div className="p-6">
-          {/* ✅ FIX 2: LOGO SECTION */}
-          {/* - Wraps the Logo in a Link to /welcome */}
-          {/* - Keeps the <Sprout /> icon */}
-          {/* - Changes text to "Kishan Khata" */}
           <Link to="/welcome" className="hover:opacity-80 transition-opacity block">
             <h1 className="text-2xl font-bold text-green-700 flex items-center gap-2">
               <Sprout /> Kishan Khata
             </h1>
           </Link>
         </div>
-        
         <div className="flex-1 mt-4">
           {navItems.map((item) => (
             <Link
@@ -69,8 +71,9 @@ export default function Layout({ children }) {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 md:ml-64 p-4 md:p-8 overflow-y-auto h-screen bg-gray-50/50">
+      {/* --- MAIN CONTENT --- */}
+      {/* Added pt-20 (padding-top) on mobile so content isn't hidden behind the header */}
+      <main className="flex-1 md:ml-64 p-4 md:p-8 pt-20 md:pt-8 overflow-y-auto min-h-screen bg-gray-50/50">
         {children}
       </main>
     </div>
