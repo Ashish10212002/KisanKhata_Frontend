@@ -18,7 +18,7 @@ export default function Login() {
     try {
       const res = await loginUser(formData);
       login(res.data.token, res.data.name);
-      navigate('/dashboard');
+      navigate('/welcome');
     } catch (err) {
       setError('Invalid email or password');
     } finally {

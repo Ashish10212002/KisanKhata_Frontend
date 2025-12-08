@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Sprout, MessageSquareText, Home } from 'lucide-react'; // Added Home Icon
+import { LayoutDashboard, Sprout, MessageSquareText, Home } from 'lucide-react';
 
 export default function Layout({ children }) {
   const location = useLocation();
   
   const navItems = [
-    { icon: <Home size={24} />, label: 'Home', path: '/home' }, // NEW
+    // ✅ FIX: Changed path from '/home' to '/welcome'
+    { icon: <Home size={24} />, label: 'Home', path: '/welcome' }, 
     { icon: <LayoutDashboard size={24} />, label: 'Finance', path: '/dashboard' },
     { icon: <Sprout size={24} />, label: 'Farms', path: '/farms' },
     { icon: <MessageSquareText size={24} />, label: 'AI', path: '/ai' },
@@ -15,7 +16,7 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen bg-gray-100 pb-24 md:pb-0 md:flex">
       
-      {/* MOBILE BOTTOM NAV - Updated to grid-cols-4 */}
+      {/* MOBILE BOTTOM NAV */}
       <nav className="fixed bottom-0 w-full bg-white border-t z-50 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <div className="grid grid-cols-4 h-20"> 
           {navItems.map((item) => (
@@ -38,9 +39,12 @@ export default function Layout({ children }) {
       {/* DESKTOP SIDEBAR */}
       <nav className="hidden md:flex flex-col w-64 bg-white border-r h-screen fixed left-0 top-0 z-40">
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-green-700 flex items-center gap-2">
-            <Sprout /> FarmTrack
-          </h1>
+          {/* ✅ FIX: Made the Logo clickable so it redirects to Welcome */}
+          <Link to="/welcome" className="hover:opacity-80 transition-opacity block">
+            <h1 className="text-2xl font-bold text-green-700 flex items-center gap-2">
+              <Sprout /> FarmTrack
+            </h1>
+          </Link>
         </div>
         <div className="flex-1 mt-4">
           {navItems.map((item) => (
