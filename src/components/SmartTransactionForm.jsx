@@ -4,8 +4,13 @@ import { X, Calculator } from 'lucide-react';
 
 export default function SmartTransactionForm({ onClose, onSuccess, initialData = null }) {
   const [farms, setFarms] = useState([]);
-  const isEditing = !!initialData; // Logic: If data exists, we are editing
-  
+
+  // --- THE FIX IS HERE ---
+  // We only switch to "Edit Mode" if the initialData actually has a database ID.
+  // This allows us to pass { farmId: 5 } for a NEW transaction without triggering the update logic.
+  const isEditing = initialData && initialData.id; 
+  // -----------------------
+
   // State initialization
   const [type, setType] = useState('EXPENSE');
   const [farmId, setFarmId] = useState('common'); 
@@ -20,17 +25,18 @@ export default function SmartTransactionForm({ onClose, onSuccess, initialData =
   useEffect(() => {
     getFarms().then(res => setFarms(res.data)).catch(console.error);
     
-    // IF EDITING: Fill the form with existing data
+    // Fill the form with existing data (even if it's just pre-filling a new entry)
     if (initialData) {
-      setType(initialData.type);
+      if (initialData.type) setType(initialData.type);
+      // Logic: If initialData has a farmId, use it. Otherwise default to 'common'.
       setFarmId(initialData.farmId || 'common');
-      setCategory(initialData.category);
-      setDate(initialData.date);
-      setDescription(initialData.description || '');
-      setAmount(initialData.amount);
-      if(initialData.quantity) {
+      if (initialData.category) setCategory(initialData.category);
+      if (initialData.date) setDate(initialData.date);
+      if (initialData.description) setDescription(initialData.description);
+      if (initialData.amount) setAmount(initialData.amount);
+      if (initialData.quantity) {
         setQuantity(initialData.quantity);
-        setUnit(initialData.unit);
+        if (initialData.unit) setUnit(initialData.unit);
       }
     }
   }, [initialData]);
@@ -59,14 +65,17 @@ export default function SmartTransactionForm({ onClose, onSuccess, initialData =
 
     try {
       if (isEditing) {
-        await updateTransaction(initialData.id, payload); // Calls your new Java PUT endpoint
+        // This will now only run if we have a valid ID
+        await updateTransaction(initialData.id, payload); 
       } else {
+        // This runs for new transactions (even if farmId was pre-filled)
         await createTransaction(payload);
       }
       onSuccess(); 
       onClose();   
     } catch (err) {
-      alert("Failed to save. Check backend.");
+      console.error(err);
+      alert("Failed to save. Check console for details.");
     }
   };
 
